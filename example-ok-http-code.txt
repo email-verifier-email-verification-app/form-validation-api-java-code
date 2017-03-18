@@ -1,0 +1,29 @@
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+
+  url := "https://api.evasrv.com/email_validate/"
+
+  payload := strings.NewReader("email=test%40domain.com&user_API_token=YOUR-EV-API-TOKEN&=")
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("cache-control", "no-cache")
+  req.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(res)
+  fmt.Println(string(body))
+
+}
